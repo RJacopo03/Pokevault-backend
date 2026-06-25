@@ -39,24 +39,21 @@ function extractPricing(card) {
 
   const cm = card.pricing.cardmarket;
   if (cm) {
-    // cm è tipicamente keyed per variante (es. "normal", "holofoil")
-    const firstVariant = Object.values(cm)[0];
-    if (firstVariant) {
-      out.cardmarket = {
-        currency: "EUR",
-        avg: firstVariant.avg ?? firstVariant.avg30 ?? null,
-        low: firstVariant.low ?? null,
-        trend: firstVariant.trend ?? null,
-        avg7: firstVariant.avg7 ?? null,
-        avg30: firstVariant.avg30 ?? null,
-        updated: card.pricing.updated ?? null,
-      };
-    }
+    out.cardmarket = {
+      currency: "EUR",
+      avg: cm.avg ?? cm.avg30 ?? cm.trend ?? null,
+      low: cm.low ?? cm.lowPrice ?? null,
+      trend: cm.trend ?? null,
+      avg7: cm.avg7 ?? null,
+      avg30: cm.avg30 ?? null,
+      updated: cm.updated ?? null,
+    };
   }
 
   const tp = card.pricing.tcgplayer;
   if (tp) {
-    const firstVariant = Object.values(tp)[0];
+    // tcgplayer IS organized per variant (normal/holofoil/reverseHolofoil...)
+    const firstVariant = Object.values(tp).find((v) => v && typeof v === "object" && "marketPrice" in v);
     if (firstVariant) {
       out.tcgplayer = {
         currency: "USD",
