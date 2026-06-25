@@ -8,7 +8,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const TCGDEX_BASE = "https://api.pokemontcg.io/v2/cards";
+const TCGDEX_BASE = "https://api.tcgdex.net/v2";
 const SUPPORTED_LANGS = ["en", "it", "de", "fr", "es", "ja"];
 
 // Cache semplice in memoria (key -> {data, expires})
